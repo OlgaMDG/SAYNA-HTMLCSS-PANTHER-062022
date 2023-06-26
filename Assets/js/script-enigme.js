@@ -35,6 +35,7 @@ $(document).ready(function() {
          return time < 10 ? `0${time}` : String(time);
        }
 
+  
 
   //-----------Toutes pages: zoomer le gros titre au passage de la souris
   // Sélectionnez tous les éléments h1 et h2 de la page
@@ -183,6 +184,57 @@ $(document).ready(function() {
       $("#popup").show();
     }
   }
+
+
+    //Animation de la souris avec panther
+
+    var canvas = document.getElementById('canvas');
+    var ctx = canvas.getContext('2d');
+    var raf;
+    var running = false;
+
+    var ball = {
+      x: 100,
+      y: 100,      
+      vx: 5,
+      vy: 1,
+      radius: 25,
+      draw: function() {
+        var img = new Image();
+        img.src = '../Illustrations+Logo/Enigme/Pantherenigme4.png';
+        ctx.drawImage(img, this.x - this.radius, this.y - this.radius, this.radius * 2, this.radius * 2);
+      }
+    };
+
+    function clear() {
+      ctx.fillStyle = 'rgba(255,255,255,0.3)';
+      ctx.fillRect(0,0,canvas.width,canvas.height);
+    }
+
+    function draw() {
+      clear();
+      ball.draw();
+      ball.x += ball.vx;
+      ball.y += ball.vy;
+      raf = window.requestAnimationFrame(draw);
+    }
+
+    canvas.addEventListener('mousemove', function(e){
+      if (!running) {
+        clear();
+        ball.x = e.clientX;
+        ball.y = e.clientY;
+        ball.draw();
+        imageContainer.style.display = 'none';
+      }
+    });
+
+    canvas.addEventListener("mouseout",function(e){
+        imageContainer.style.display = 'block';
+      ctx.clearRect(0,0, canvas.width, canvas.height);
+    });
+
+    ball.draw();
 
 });
 
